@@ -1,9 +1,7 @@
 package com.aojing.redstore.media.dao;
 
 import com.aojing.redstore.media.pojo.MediaInfo;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface MediaInfoMapper {
     int deleteByPrimaryKey(Integer id);
 

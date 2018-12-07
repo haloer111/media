@@ -11,6 +11,8 @@ public class MediaInfo {
 
     private String menuId;
 
+    private String hotSellId;
+
     private String absolutePath;
 
     private String relativePath;
@@ -63,6 +65,14 @@ public class MediaInfo {
 
     public void setMenuId(String menuId) {
         this.menuId = menuId == null ? null : menuId.trim();
+    }
+
+    public String getHotSellId() {
+        return hotSellId;
+    }
+
+    public void setHotSellId(String hotSellId) {
+        this.hotSellId = hotSellId == null ? null : hotSellId.trim();
     }
 
     public String getAbsolutePath() {

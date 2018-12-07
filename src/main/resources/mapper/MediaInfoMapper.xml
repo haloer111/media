@@ -6,6 +6,7 @@
     <result column="entity_id" property="entityId" jdbcType="VARCHAR" />
     <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
     <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="hot_sell_id" property="hotSellId" jdbcType="VARCHAR" />
     <result column="absolute_path" property="absolutePath" jdbcType="VARCHAR" />
     <result column="relative_path" property="relativePath" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
@@ -19,8 +20,8 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, entity_id, goods_id, menu_id, absolute_path, relative_path, type, name, NOCOUNT, 
-    lllustrate, leading_officical, location, remark, create_time, update_time
+    id, entity_id, goods_id, menu_id, hot_sell_id, absolute_path, relative_path, type, 
+    name, NOCOUNT, lllustrate, leading_officical, location, remark, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -34,17 +35,17 @@
   </delete>
   <insert id="insert" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
     insert into media_info_tb (id, entity_id, goods_id, 
-      menu_id, absolute_path, relative_path, 
-      type, name, NOCOUNT, 
-      lllustrate, leading_officical, location, 
-      remark, create_time, update_time
-      )
+      menu_id, hot_sell_id, absolute_path, 
+      relative_path, type, name, 
+      NOCOUNT, lllustrate, leading_officical, 
+      location, remark, create_time, 
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{entityId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
-      #{menuId,jdbcType=VARCHAR}, #{absolutePath,jdbcType=VARCHAR}, #{relativePath,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nocount,jdbcType=VARCHAR}, 
-      #{lllustrate,jdbcType=VARCHAR}, #{leadingOfficical,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{menuId,jdbcType=VARCHAR}, #{hotSellId,jdbcType=VARCHAR}, #{absolutePath,jdbcType=VARCHAR}, 
+      #{relativePath,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{nocount,jdbcType=VARCHAR}, #{lllustrate,jdbcType=VARCHAR}, #{leadingOfficical,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
     insert into media_info_tb
@@ -60,6 +61,9 @@
       </if>
       <if test="menuId != null" >
         menu_id,
+      </if>
+      <if test="hotSellId != null" >
+        hot_sell_id,
       </if>
       <if test="absolutePath != null" >
         absolute_path,
@@ -108,6 +112,9 @@
       <if test="menuId != null" >
         #{menuId,jdbcType=VARCHAR},
       </if>
+      <if test="hotSellId != null" >
+        #{hotSellId,jdbcType=VARCHAR},
+      </if>
       <if test="absolutePath != null" >
         #{absolutePath,jdbcType=VARCHAR},
       </if>
@@ -155,6 +162,9 @@
       <if test="menuId != null" >
         menu_id = #{menuId,jdbcType=VARCHAR},
       </if>
+      <if test="hotSellId != null" >
+        hot_sell_id = #{hotSellId,jdbcType=VARCHAR},
+      </if>
       <if test="absolutePath != null" >
         absolute_path = #{absolutePath,jdbcType=VARCHAR},
       </if>
@@ -196,6 +206,7 @@
     set entity_id = #{entityId,jdbcType=VARCHAR},
       goods_id = #{goodsId,jdbcType=VARCHAR},
       menu_id = #{menuId,jdbcType=VARCHAR},
+      hot_sell_id = #{hotSellId,jdbcType=VARCHAR},
       absolute_path = #{absolutePath,jdbcType=VARCHAR},
       relative_path = #{relativePath,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},

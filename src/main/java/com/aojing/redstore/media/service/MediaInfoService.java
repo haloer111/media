@@ -1,8 +1,11 @@
 package com.aojing.redstore.media.service;
 
 import com.aojing.redstore.media.common.ServerResponse;
+import com.aojing.redstore.media.form.MediaForm;
 import com.aojing.redstore.media.pojo.MediaInfo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author gexiao
@@ -11,17 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MediaInfoService {
     /**
      * 新增媒体附件
-     * @param mediaInfo
+     * @param mediaForm
      * @return
      */
-    public ServerResponse<String> addMediaInfo(MediaInfo mediaInfo);
-
+    public ServerResponse<String> addMediaInfo(MediaForm mediaForm);
     /**
      * 删除文件
-     * @param fileName
+     * @param mediaId
      * @return
      */
-    public ServerResponse delete(String fileName) ;
+    public ServerResponse delete(Integer mediaId) ;
 
     /**
      * 上传文件
@@ -29,7 +31,7 @@ public interface MediaInfoService {
      * @param path
      * @return
      */
-    public ServerResponse<String> upload(MultipartFile file, String path);
+    public ServerResponse<String> upload(List<MultipartFile> fileList, String path);
 
     public ServerResponse<String> queryById(Integer id);
 

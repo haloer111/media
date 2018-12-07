@@ -28,6 +28,8 @@ public enum ExceptionEnum {
     LOGIN_FAIL(1101005, "登录失败, 登录信息不正确"),
 
     LOGOUT_SUCCESS(1101006, "登出成功"),
+
+    UPLOAD_FAIL(1101006,"上传失败"),
     ;
 
     private Integer code;
