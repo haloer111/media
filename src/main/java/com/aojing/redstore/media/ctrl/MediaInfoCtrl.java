@@ -32,15 +32,14 @@ public class MediaInfoCtrl {
     private MediaInfoService mediaInfoService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ServerResponse<String> upload(@RequestParam(value = "uploadFile", required = false) MultipartFile file,
+    public ServerResponse<List<String>> upload(@RequestParam(value = "uploadFile", required = false) MultipartFile file,
                                          HttpServletRequest request) {
         String path = request.getSession().getServletContext().getRealPath("upload");
         List<MultipartFile> files = new ArrayList<>();
         files.add(file);
-        ServerResponse<String> targetFileName = mediaInfoService.upload(files, path);
-        String data = targetFileName.getData();
+        ServerResponse<List<String>> targetFileNameList = mediaInfoService.upload(files, path);
         //data = prefix_img + data;
-        return ServerResponse.createBySuccess(data);
+        return targetFileNameList;
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
@@ -53,9 +52,9 @@ public class MediaInfoCtrl {
         return mediaInfoService.queryById(id);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ServerResponse<String> add(MediaForm mediaInfo) {
-        return mediaInfoService.addMediaInfo(mediaInfo);
+    @RequestMapping(value = "/addList", method = RequestMethod.POST)
+    public ServerResponse<String> addList(List<MediaForm> mediaInfoList) {
+        return mediaInfoService.addMediaInfoList(mediaInfoList);
     }
 
 

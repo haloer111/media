@@ -49,9 +49,10 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     @Autowired
     FTPUtil fTPUtil;
 
-    public ServerResponse<String> upload(List<MultipartFile> fileList, String path) {
+    public ServerResponse<List<String>> upload(List<MultipartFile> fileList, String path) {
         String absUploadFileName = null;
         String uploadFileName = null;
+        List<String> uploadFileNameList = new ArrayList<>();
         for (MultipartFile file : fileList) {
 
             String fileName = file.getOriginalFilename();
@@ -64,11 +65,11 @@ public class MediaInfoServiceImpl implements MediaInfoService {
                 //判断上传的类型
                 if (Const.MediaTypeSet.IMG_TYPE.contains(fileExtensionName)) {
                     type = Const.UploadType.UPLOAD_TUPE_IMG;
-                    // absUploadFileName = prefix_img + uploadFileName;
+                    absUploadFileName = prefix_img + uploadFileName;
                 }
                 if (Const.MediaTypeSet.VIDEO_TYPE.contains(fileExtensionName)) {
                     type = Const.UploadType.UPLOAD_TUPE_VIDEO;
-                    //  absUploadFileName = prefix_video + uploadFileName;
+                    absUploadFileName = prefix_video + uploadFileName;
 
                 }
             } else {
@@ -90,7 +91,8 @@ public class MediaInfoServiceImpl implements MediaInfoService {
 
                 fTPUtil.uploadFile(Lists.newArrayList(targetFile), type);
                 //已经上传到ftp服务器上
-
+                //如果上传成功,加到返回文件名字列表
+                uploadFileNameList.add(absUploadFileName);
                 targetFile.delete();
             } catch (IOException e) {
                 log.error("上传文件异常", e);
@@ -99,7 +101,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
 
         }
 
-        return ServerResponse.createBySuccess(uploadFileName);
+        return ServerResponse.createBySuccess(uploadFileNameList);
     }
 
 
@@ -145,7 +147,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
     public ServerResponse<String> addMediaInfo(MediaForm mediaForm) {
-        MediaInfo mediaInfo = new MediaInfo();
+        /*MediaInfo mediaInfo = new MediaInfo();
         BeanUtils.copyProperties(mediaForm, mediaInfo);
         List<MultipartFile> fileList = new ArrayList<>();
 
@@ -179,7 +181,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         int result = mapper.insertSelective(mediaInfo);
         if (result > 0) {
             return ServerResponse.createBySuccess("新增媒体附件成功");
-        }
+        }*/
         return ServerResponse.createByErrorMessage("新增媒体附件失败");
 
     }
@@ -191,5 +193,30 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         }
         return ServerResponse.createByErrorMessage("新增媒体附件失败");
 
+    }
+
+    @Override
+    public ServerResponse addMediaInfoList(List<MediaForm> mediaInfoList) {
+        for (MediaForm mediaForm : mediaInfoList) {
+            MediaInfo mediaInfo = new MediaInfo();
+            BeanUtils.copyProperties(mediaForm, mediaInfo);
+            //设置名字
+            //mediaForm.getAbsolutePath().substring()
+            //mediaInfo.setName("");
+
+            mediaInfo.setNocount("");
+            mediaInfo.setLllustrate("");
+            mediaInfo.setLeadingOfficical("");
+            mediaInfo.setLocation("");
+            mediaInfo.setRemark("");
+            mediaInfo.setCreateTime(new Date());
+            mediaInfo.setUpdateTime(new Date());
+            int result = mapper.insertSelective(mediaInfo);
+            if (result > 0) {
+                return ServerResponse.createBySuccess("新增媒体附件成功");
+            }
+            return ServerResponse.createByErrorMessage("新增媒体附件失败");
+        }
+        return ServerResponse.createByErrorMessage("新增媒体附件失败");
     }
 }

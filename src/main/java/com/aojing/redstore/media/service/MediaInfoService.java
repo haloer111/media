@@ -31,8 +31,10 @@ public interface MediaInfoService {
      * @param path
      * @return
      */
-    public ServerResponse<String> upload(List<MultipartFile> fileList, String path);
+    public ServerResponse<List<String>> upload(List<MultipartFile> fileList, String path);
 
     public ServerResponse<String> queryById(Integer id);
+
+    ServerResponse addMediaInfoList(List<MediaForm> mediaInfoList);
 
 }

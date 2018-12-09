@@ -24,7 +24,8 @@ public class MediaForm {
     private String hotSellId;
 
     private String nocount;
-    private Integer typel;
+    private Integer type;
+    private String absolutePath;
 
     private MultipartFile imgFile;
     private MultipartFile videoFile;
