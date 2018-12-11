@@ -28,11 +28,11 @@ spring:
       #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
-  http:
-    multipart:
-      enabled: true   # 启用http上传处理
-      max-file-size: 100MB # 设置单个文件的最大长度
-      max-request-size: 100MB # 设置最大的请求文件的大小
+#  http:
+#    multipart:
+#      enabled: true   # 启用http上传处理
+#      max-file-size: 100MB # 设置单个文件的最大长度
+#      max-request-size: 100MB # 设置最大的请求文件的大小
   application:
     name: media
 #      file-size-threshold: 1MB  # 当上传文件达到1MB的时候进行磁盘写入

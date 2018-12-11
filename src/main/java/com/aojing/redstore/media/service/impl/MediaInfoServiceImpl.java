@@ -8,9 +8,9 @@ import com.aojing.redstore.media.common.Const;
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.dao.MediaInfoMapper;
 import com.aojing.redstore.media.enums.ExceptionEnum;
-import com.aojing.redstore.media.enums.FileTypeEnum;
 import com.aojing.redstore.media.exception.RedStoreException;
 import com.aojing.redstore.media.form.MediaForm;
+import com.aojing.redstore.media.form.MediaOutput;
 import com.aojing.redstore.media.pojo.MediaInfo;
 import com.aojing.redstore.media.properties.FtpProperties;
 import com.aojing.redstore.media.service.MediaInfoService;
@@ -196,8 +196,8 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
     @Override
-    public ServerResponse addMediaInfoList(List<MediaForm> mediaInfoList) {
-        for (MediaForm mediaForm : mediaInfoList) {
+    public ServerResponse addMediaInfoList(List<MediaOutput> mediaInfoList) {
+        for (MediaOutput mediaForm : mediaInfoList) {
             MediaInfo mediaInfo = new MediaInfo();
             BeanUtils.copyProperties(mediaForm, mediaInfo);
             //设置名字
@@ -212,11 +212,10 @@ public class MediaInfoServiceImpl implements MediaInfoService {
             mediaInfo.setCreateTime(new Date());
             mediaInfo.setUpdateTime(new Date());
             int result = mapper.insertSelective(mediaInfo);
-            if (result > 0) {
-                return ServerResponse.createBySuccess("新增媒体附件成功");
+            if (result <= 0) {
+                return ServerResponse.createByErrorMessage("新增媒体附件失败");
             }
-            return ServerResponse.createByErrorMessage("新增媒体附件失败");
         }
-        return ServerResponse.createByErrorMessage("新增媒体附件失败");
+        return ServerResponse.createBySuccess("新增媒体附件成功");
     }
 }

@@ -2,16 +2,14 @@ package com.aojing.redstore.media.ctrl;
 
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.form.MediaForm;
+import com.aojing.redstore.media.form.MediaOutput;
 import com.aojing.redstore.media.pojo.MediaInfo;
 import com.aojing.redstore.media.properties.FtpProperties;
 import com.aojing.redstore.media.service.MediaInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class MediaInfoCtrl {
     }
 
     @RequestMapping(value = "/addList", method = RequestMethod.POST)
-    public ServerResponse<String> addList(List<MediaForm> mediaInfoList) {
+    public ServerResponse<String> addList(@RequestBody List<MediaOutput> mediaInfoList) {
         return mediaInfoService.addMediaInfoList(mediaInfoList);
     }
 

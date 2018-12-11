@@ -27,6 +27,4 @@ public class MediaForm {
     private Integer type;
     private String absolutePath;
 
-    private MultipartFile imgFile;
-    private MultipartFile videoFile;
 }
