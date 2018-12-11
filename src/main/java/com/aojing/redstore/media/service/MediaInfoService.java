@@ -21,9 +21,10 @@ public interface MediaInfoService {
     /**
      * 删除文件
      * @param mediaId
+     * @param userId
      * @return
      */
-    public ServerResponse delete(Integer mediaId) ;
+    public ServerResponse delete(Integer mediaId, String userId) ;
 
     /**
      * 上传文件
@@ -33,7 +34,7 @@ public interface MediaInfoService {
      */
     public ServerResponse<List<String>> upload(List<MultipartFile> fileList, String path);
 
-    public ServerResponse<String> queryById(Integer id);
+    public ServerResponse<String> queryById(Integer id, String userId);
 
     ServerResponse addMediaInfoList(List<MediaOutput> mediaInfoList);
 

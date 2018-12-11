@@ -105,7 +105,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
 
-    public ServerResponse delete(Integer mediaId) {
+    public ServerResponse delete(Integer mediaId, String userId) {
         if (mediaId == null) {
             return ServerResponse.createByErrorMessage("文件id不能为空");
         }
@@ -113,7 +113,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         List<String> fileNameList = new ArrayList<>();
 
         //1. 通过id查询出文件名
-        String fileName = this.queryById(mediaId).getData();
+        String fileName = this.queryById(mediaId, userId).getData();
         if (StringUtils.isBlank(fileName)) {
             return ServerResponse.createByErrorMessage("未能查询到文件名");
         }
@@ -143,7 +143,12 @@ public class MediaInfoServiceImpl implements MediaInfoService {
             log.error("上传文件异常", e);
             return ServerResponse.createByError();
         }
-        return ServerResponse.createBySuccess();
+
+        int result = mapper.deleteByPrimaryKey(mediaId);
+        if (result > 0) {
+            return ServerResponse.createBySuccessMessage("删除成功");
+        }
+        return ServerResponse.createByError();
     }
 
     public ServerResponse<String> addMediaInfo(MediaForm mediaForm) {
@@ -186,7 +191,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
 
     }
 
-    public ServerResponse<String> queryById(Integer id) {
+    public ServerResponse<String> queryById(Integer id, String userId) {
         MediaInfo mediaInfo = mapper.selectByPrimaryKey(id);
         if (mediaInfo != null) {
             return ServerResponse.createBySuccess("新增媒体附件成功", mediaInfo.getName());
