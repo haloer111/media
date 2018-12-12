@@ -1,8 +1,6 @@
 package com.aojing.redstore.media.service.impl;
 
-import java.util.Date;
-
-import java.util.ArrayList;
+import java.util.*;
 
 import com.aojing.redstore.media.common.Const;
 import com.aojing.redstore.media.common.ServerResponse;
@@ -15,6 +13,7 @@ import com.aojing.redstore.media.pojo.MediaInfo;
 import com.aojing.redstore.media.properties.FtpProperties;
 import com.aojing.redstore.media.service.MediaInfoService;
 import com.aojing.redstore.media.util.FTPUtil;
+import com.aojing.redstore.media.vo.ImgVo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,12 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author gexiao
@@ -64,11 +63,11 @@ public class MediaInfoServiceImpl implements MediaInfoService {
                 uploadFileName = UUID.randomUUID().toString() + "." + fileExtensionName;
                 //判断上传的类型
                 if (Const.MediaTypeSet.IMG_TYPE.contains(fileExtensionName)) {
-                    type = Const.UploadType.UPLOAD_TUPE_IMG;
+                    type = Const.UploadType.UPLOAD_TYPE_IMG;
                     absUploadFileName = prefix_img + uploadFileName;
                 }
                 if (Const.MediaTypeSet.VIDEO_TYPE.contains(fileExtensionName)) {
-                    type = Const.UploadType.UPLOAD_TUPE_VIDEO;
+                    type = Const.UploadType.UPLOAD_TYPE_VIDEO;
                     absUploadFileName = prefix_video + uploadFileName;
 
                 }
@@ -125,10 +124,10 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         if (StringUtils.isNotBlank(fileExtensionName)) {
             //判断上传的类型
             if (Const.MediaTypeSet.IMG_TYPE.contains(fileExtensionName)) {
-                type = Const.UploadType.UPLOAD_TUPE_IMG;
+                type = Const.UploadType.UPLOAD_TYPE_IMG;
             }
             if (Const.MediaTypeSet.VIDEO_TYPE.contains(fileExtensionName)) {
-                type = Const.UploadType.UPLOAD_TUPE_VIDEO;
+                type = Const.UploadType.UPLOAD_TYPE_VIDEO;
             }
         } else {
             throw new RedStoreException(ExceptionEnum.PARAM_ERROR);
@@ -223,4 +222,25 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         }
         return ServerResponse.createBySuccess("新增媒体附件成功");
     }
+
+    @Override
+    public ServerResponse<List<ImgVo>> queryImgBygoodsId(List<String> goodsIdList, Integer type) {
+        if (null == type || CollectionUtils.isEmpty(goodsIdList)) {
+            return ServerResponse.createByErrorMessage("传入参数失败");
+        }
+        List<ImgVo> imgVoList = new ArrayList<>();
+        for (String goodsId : goodsIdList) {
+            List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsIdAndType(goodsId, type);
+            for (MediaInfo mediaInfo : mediaInfoList) {
+                ImgVo imgVo = new ImgVo();
+                BeanUtils.copyProperties(mediaInfo, imgVo);
+                imgVoList.add(imgVo);
+            }
+            //测试
+             //imgVoList.addAll(mediaInfoList.stream().map(e -> new ImgVo()).collect(Collectors.toList()));
+        }
+        return ServerResponse.createBySuccess(imgVoList);
+
+    }
+
 }

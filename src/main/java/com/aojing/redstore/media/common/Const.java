@@ -14,8 +14,8 @@ public interface Const {
      * 上传类型
      */
     interface UploadType {
-        Integer UPLOAD_TUPE_IMG = 1;
-        Integer UPLOAD_TUPE_VIDEO = 2;
+        Integer UPLOAD_TYPE_IMG = 1;
+        Integer UPLOAD_TYPE_VIDEO = 2;
 
     }
 

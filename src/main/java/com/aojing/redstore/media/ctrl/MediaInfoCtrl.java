@@ -3,6 +3,7 @@ package com.aojing.redstore.media.ctrl;
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.form.MediaOutput;
 import com.aojing.redstore.media.service.MediaInfoService;
+import com.aojing.redstore.media.vo.ImgVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author gexiao
@@ -42,6 +44,14 @@ public class MediaInfoCtrl {
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ServerResponse<String> query(Integer id,String userId) {
         return mediaInfoService.queryById(id, userId);
+    }
+
+
+    @RequestMapping(value = "/getBgImg", method = RequestMethod.POST)
+    public ServerResponse<List<ImgVo>> getBgImg(@RequestBody Map<String,Object>map) {
+        List<String> goodsIdList = (List<String>) map.get("goodsIdList");
+        Integer type =(Integer)map.get("type");
+        return mediaInfoService.queryImgBygoodsId(goodsIdList, type);
     }
 
     @RequestMapping(value = "/addList", method = RequestMethod.POST)

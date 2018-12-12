@@ -9,7 +9,7 @@ import java.io.Serializable;
 @JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
 //保证序列化json的时候,如果是null的对象,key也会消失
 public class ServerResponse<T> implements Serializable {
-
+    private String key;
     private int status;
     private String msg;
     private T data;
@@ -20,17 +20,29 @@ public class ServerResponse<T> implements Serializable {
     private ServerResponse(int status,T data){
         this.status = status;
         this.data = data;
+        this.key = null;
+
     }
 
     private ServerResponse(int status,String msg,T data){
         this.status = status;
         this.msg = msg;
         this.data = data;
+        this.key = null;
+
     }
 
     private ServerResponse(int status,String msg){
         this.status = status;
         this.msg = msg;
+        this.key = null;
+    }
+
+    public ServerResponse(String key, int status, String msg, T data) {
+        this.key = key;
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
     }
 
     @JsonIgnore

@@ -3,6 +3,7 @@ package com.aojing.redstore.media.service;
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.form.MediaForm;
 import com.aojing.redstore.media.form.MediaOutput;
+import com.aojing.redstore.media.vo.ImgVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -38,4 +39,5 @@ public interface MediaInfoService {
 
     ServerResponse addMediaInfoList(List<MediaOutput> mediaInfoList);
 
+    ServerResponse<List<ImgVo>> queryImgBygoodsId(List<String> goodsIdList, Integer type);
 }

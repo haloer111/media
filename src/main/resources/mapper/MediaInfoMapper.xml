@@ -227,4 +227,15 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
+  <!--manual-->
+  <select id="queryImgBygoodsIdAndType" parameterType="map" resultMap="BaseResultMap">
+   select
+   <include refid="Base_Column_List"/>
+   from media_info_tb
+  where goods_id = #{goodsId}
+    and type = #{type}
+  </select>
 </mapper>

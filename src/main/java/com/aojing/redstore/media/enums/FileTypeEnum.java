@@ -10,9 +10,38 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum FileTypeEnum {
-    IMG(10,"图片"),
-    VIDEO(20,"视频"),
+    /**
+     * 背景图片
+     */
+    BG_IMG(10,"背景图片"),
+    /**
+     * 头像图标
+     */
+    ICON(20,"头像图标"),
 
+    /**
+     * 产品图
+     */
+    PRODUCT_IMG(30,"产品图"),
+    /**
+     * 详细图
+     */
+    DETAIL_IMG(40,"详细图"),
+    /**
+     * 略缩图
+     */
+    SLIGHTLY_THUMBNAIL(50,"略缩图"),
+
+
+    /**
+     * 主页背景视频
+     */
+    BG_VIDEO(60,"主页背景视频"),
+
+    /**
+     * 产品视频
+     */
+    PRODUCT_VIDEO(70,"产品视频"),
 
 
     ;

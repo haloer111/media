@@ -4,13 +4,10 @@ import com.aojing.redstore.media.common.Const;
 import com.aojing.redstore.media.properties.FtpProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -47,7 +44,7 @@ public class FTPUtil {
         boolean result = false;
         FTPUtil ftpUtil = new FTPUtil(ftpIp, 21, ftpUser, ftpPass);
         log.info("开始连接ftp服务器");
-        if (Const.UploadType.UPLOAD_TUPE_IMG == type) {
+        if (Const.UploadType.UPLOAD_TYPE_IMG == type) {
             result = ftpUtil.uploadFile("img", fileList);
         } else {
             result = ftpUtil.uploadFile("video", fileList);
@@ -62,7 +59,7 @@ public class FTPUtil {
         if (connectServer(this.getFtpIp(), 21, this.getFtpUser(), this.getFtpPass())) {
 
             log.info("开始连接ftp服务器");
-            if (Const.UploadType.UPLOAD_TUPE_IMG == type) {
+            if (Const.UploadType.UPLOAD_TYPE_IMG == type) {
                 result = this.delFile("img", fileNameList);
             } else {
                 result = this.delFile("video", fileNameList);

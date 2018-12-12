@@ -3,6 +3,8 @@ package com.aojing.redstore.media.dao;
 import com.aojing.redstore.media.pojo.MediaInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface MediaInfoMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,10 @@ public interface MediaInfoMapper {
     int updateByPrimaryKeySelective(MediaInfo record);
 
     int updateByPrimaryKey(MediaInfo record);
+
+
+
+
+    //manual
+    List<MediaInfo> queryImgBygoodsIdAndType(@Param("goodsId") String goodsId, @Param("type") Integer type);
 }
