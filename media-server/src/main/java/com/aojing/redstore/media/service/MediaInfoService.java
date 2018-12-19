@@ -40,4 +40,11 @@ public interface MediaInfoService {
     boolean addMediaInfoList(List<MediaOutput> mediaInfoList);
 
     List<ImgInput> queryImgBygoodsId(List<String> goodsIdList, Integer type);
+
+    /**
+     * 查询全部类型
+     * @param goodsIdList
+     * @return
+     */
+    List<ImgInput> queryImgBygoodsId(List<String> goodsIdList);
 }

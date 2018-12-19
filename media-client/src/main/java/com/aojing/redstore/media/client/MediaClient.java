@@ -16,25 +16,30 @@ import java.util.Map;
  * @author gexiao
  * @date 2018/12/17 14:30
  */
-@FeignClient(name = "media", configuration = SpringMultipartEncoder.class)
+//@FeignClient(name = "media", configuration = SpringMultipartEncoder.class)
+@FeignClient(name = "media")
 public interface MediaClient {
 
-    @PostMapping(value = "/media/getBgImg")
-    List<ImgInput> getBgImg(@RequestBody Map<String, Object> map);
+    @PostMapping(value = "/media/getImgByType")
+    List<ImgInput> getImgByType(@RequestBody List<String> goodsIdList, @RequestParam(value = "type") Integer type);
 
-    @GetMapping(value = "/media/delete")
-    boolean delete(Integer mediaId, String userId);
+    @PostMapping(value = "/media/delete")
+    boolean delete(@RequestBody Integer mediaId, @RequestParam(value = "userId") String userId);
 
     @PostMapping(value = "/media/addList")
     boolean addList(@RequestBody List<MediaOutput> mediaInfoList);
-   /* @PostMapping(value = "/media/upload")
-     List<String> upload(@RequestParam(value = "uploadFile", required = false) MultipartFile file,
-                               HttpServletRequest request);*/
+
+    @PostMapping(value = "/media/upload")
+    List<String> upload(@RequestParam(value = "uploadFile", required = false) MultipartFile file,
+                        HttpServletRequest request);
 
 
     // 存储图片，返回所有图片在fastdfs上的urls
     @RequestMapping(method = RequestMethod.POST, value = "/media/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     List<String> upload(@RequestPart(value = "files") MultipartFile[] files);
+
+    @PostMapping(value = "/media/getImgAllByType")
+    List<ImgInput> getImgAllByType(@RequestBody List<String> goodsIdList);
 
 }

@@ -238,4 +238,11 @@
   where goods_id = #{goodsId}
     and type = #{type}
   </select>
+
+  <select id="queryImgBygoodsId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from media_info_tb
+    where goods_id = #{goodsId}
+  </select>
 </mapper>

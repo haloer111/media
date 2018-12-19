@@ -50,8 +50,8 @@ public class MediaInfoCtrl {
     }
 
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public boolean delete(Integer mediaId, String userId) {
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public boolean delete(@RequestBody Integer mediaId,@RequestParam(value = "userId") String userId) {
         return mediaInfoService.delete(mediaId, userId);
     }
 
@@ -61,10 +61,8 @@ public class MediaInfoCtrl {
     }
 
 
-    @RequestMapping(value = "/getBgImg", method = RequestMethod.POST)
-    public List<ImgInput> getBgImg(@RequestBody Map<String, Object> map) {
-        List<String> goodsIdList = (List<String>) map.get("goodsIdList");
-        Integer type = (Integer) map.get("type");
+    @RequestMapping(value = "/getImgByType", method = RequestMethod.POST)
+    public List<ImgInput> getImgByType(@RequestBody List<String> goodsIdList,@RequestParam(value = "type") Integer type) {
         return mediaInfoService.queryImgBygoodsId(goodsIdList, type);
     }
 
@@ -73,5 +71,8 @@ public class MediaInfoCtrl {
         return mediaInfoService.addMediaInfoList(mediaInfoList);
     }
 
-
+    @RequestMapping(value = "/getImgAllByType", method = RequestMethod.POST)
+    public List<ImgInput> getImgAllByType(@RequestBody List<String> goodsIdList){
+        return mediaInfoService.queryImgBygoodsId(goodsIdList);
+    }
 }

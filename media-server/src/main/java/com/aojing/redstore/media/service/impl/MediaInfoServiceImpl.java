@@ -4,6 +4,7 @@ import com.aojing.redstore.media.common.Const;
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.dao.MediaInfoMapper;
 import com.aojing.redstore.media.enums.ExceptionEnum;
+import com.aojing.redstore.media.enums.FileTypeEnum;
 import com.aojing.redstore.media.exception.RedStoreException;
 import com.aojing.redstore.media.form.MediaForm;
 import com.aojing.redstore.media.common.MediaOutput;
@@ -15,6 +16,7 @@ import com.aojing.redstore.media.common.ImgInput;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Case;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author gexiao
@@ -232,16 +231,61 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         List<ImgInput> imgInputList = new ArrayList<>();
         for (String goodsId : goodsIdList) {
             List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsIdAndType(goodsId, type);
-            for (MediaInfo mediaInfo : mediaInfoList) {
-                ImgInput imgInput = new ImgInput();
-                BeanUtils.copyProperties(mediaInfo, imgInput);
-                imgInputList.add(imgInput);
+            if (!CollectionUtils.isEmpty(mediaInfoList)) {
+                assembleImgInput(imgInputList, mediaInfoList);
             }
-            //测试
-            //imgInputList.addAll(mediaInfoList.stream().map(e -> new ImgInput()).collect(Collectors.toList()));
         }
         return imgInputList;
 
     }
+
+    @Override
+    public List<ImgInput> queryImgBygoodsId(List<String> goodsIdList) {
+        if (CollectionUtils.isEmpty(goodsIdList)) {
+            return null;
+        }
+        List<ImgInput> imgInputList = new ArrayList<>();
+        for (String goodsId : goodsIdList) {
+            List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsId(goodsId);
+            assembleImgInput(imgInputList, mediaInfoList);
+        }
+        //单独处理
+        return imgInputList;
+    }
+
+    private List<ImgInput> assembleImgInput(List<ImgInput> imgInputList, List<MediaInfo> mediaInfoList) {
+        ImgInput imgInput = new ImgInput();
+        BeanUtils.copyProperties(mediaInfoList.get(0), imgInput);
+        List<String> productImg = new ArrayList<>();
+        List<String> detailImg = new ArrayList<>();
+        List<String> slightlyThumbnail = new ArrayList<>();
+        List<String> bgVideo = new ArrayList<>();
+        List<String> productVideo = new ArrayList<>();
+        for (MediaInfo mediaInfo : mediaInfoList) {
+            if (mediaInfo.getType() == FileTypeEnum.BG_IMG.getCode()) {
+                imgInput.setBgImg(mediaInfo.getAbsolutePath());
+            } else if (mediaInfo.getType() == FileTypeEnum.ICON.getCode()) {
+                imgInput.setIcon(mediaInfo.getAbsolutePath());
+            } else if (mediaInfo.getType() == FileTypeEnum.PRODUCT_IMG.getCode()) {
+                productImg.add(mediaInfo.getAbsolutePath());
+                imgInput.setProductImg(productImg);
+            } else if (mediaInfo.getType() == FileTypeEnum.DETAIL_IMG.getCode()) {
+                detailImg.add(mediaInfo.getAbsolutePath());
+                imgInput.setDetailImg(detailImg);
+            } else if (mediaInfo.getType() == FileTypeEnum.SLIGHTLY_THUMBNAIL.getCode()) {
+                slightlyThumbnail.add(mediaInfo.getAbsolutePath());
+                imgInput.setSlightlyThumbnail(slightlyThumbnail);
+            } else if (mediaInfo.getType() == FileTypeEnum.BG_VIDEO.getCode()) {
+                bgVideo.add(mediaInfo.getAbsolutePath());
+                imgInput.setBgVideo(bgVideo);
+            } else if (mediaInfo.getType() == FileTypeEnum.PRODUCT_VIDEO.getCode()) {
+                productVideo.add(mediaInfo.getAbsolutePath());
+                imgInput.setProductVideo(productVideo);
+            }
+        }
+        imgInputList.add(imgInput);
+        return imgInputList;
+    }
+
 
 }
