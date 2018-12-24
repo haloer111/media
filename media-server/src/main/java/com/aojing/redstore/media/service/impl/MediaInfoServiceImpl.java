@@ -1,22 +1,17 @@
 package com.aojing.redstore.media.service.impl;
 
-import com.aojing.redstore.media.common.Const;
-import com.aojing.redstore.media.common.ServerResponse;
+import com.aojing.redstore.media.common.*;
 import com.aojing.redstore.media.dao.MediaInfoMapper;
 import com.aojing.redstore.media.enums.ExceptionEnum;
 import com.aojing.redstore.media.enums.FileTypeEnum;
 import com.aojing.redstore.media.exception.RedStoreException;
-import com.aojing.redstore.media.form.MediaForm;
-import com.aojing.redstore.media.common.MediaOutput;
 import com.aojing.redstore.media.pojo.MediaInfo;
 import com.aojing.redstore.media.properties.FtpProperties;
 import com.aojing.redstore.media.service.MediaInfoService;
 import com.aojing.redstore.media.util.FTPUtil;
-import com.aojing.redstore.media.common.ImgInput;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Case;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,7 +99,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
 
-    public boolean delete(Integer mediaId, String userId) {
+    public boolean delete(String mediaId, String userId) {
         if (mediaId == null) {
             return false;
         }
@@ -150,47 +145,8 @@ public class MediaInfoServiceImpl implements MediaInfoService {
         return false;
     }
 
-    public ServerResponse<String> addMediaInfo(MediaForm mediaForm) {
-        /*MediaInfo mediaInfo = new MediaInfo();
-        BeanUtils.copyProperties(mediaForm, mediaInfo);
-        List<MultipartFile> fileList = new ArrayList<>();
 
-        if (mediaInfo.getType() == FileTypeEnum.IMG.getCode()) {
-            //调用上传方法
-            fileList.add(mediaForm.getImgFile());
-            ServerResponse<String> upload = this.upload(fileList, "upload");
-            if (!upload.isSuccess()) {
-                throw new RedStoreException(ExceptionEnum.UPLOAD_FAIL);
-            }
-
-            mediaInfo.setAbsolutePath(prefix_img + upload.getData());
-            mediaInfo.setRelativePath(upload.getData());
-        } else if (mediaInfo.getType() == FileTypeEnum.VIDEO.getCode()) {
-            fileList.add(mediaForm.getImgFile());
-            ServerResponse<String> upload = this.upload(fileList, "upload");
-            if (!upload.isSuccess()) {
-                throw new RedStoreException(ExceptionEnum.UPLOAD_FAIL);
-            }
-            mediaInfo.setAbsolutePath(prefix_video + upload.getData());
-            mediaInfo.setRelativePath(upload.getData());
-        }
-        mediaInfo.setNocount("");
-        mediaInfo.setLllustrate("");
-        mediaInfo.setLeadingOfficical("");
-        mediaInfo.setLocation("");
-        mediaInfo.setRemark("");
-        mediaInfo.setCreateTime(new Date());
-        mediaInfo.setUpdateTime(new Date());
-
-        int result = mapper.insertSelective(mediaInfo);
-        if (result > 0) {
-            return ServerResponse.createBySuccess("新增媒体附件成功");
-        }*/
-        return ServerResponse.createByErrorMessage("新增媒体附件失败");
-
-    }
-
-    public ServerResponse<String> queryById(Integer id, String userId) {
+    public ServerResponse<String> queryById(String id, String userId) {
         MediaInfo mediaInfo = mapper.selectByPrimaryKey(id);
         if (mediaInfo != null) {
             return ServerResponse.createBySuccess("新增媒体附件成功", mediaInfo.getName());
@@ -207,7 +163,7 @@ public class MediaInfoServiceImpl implements MediaInfoService {
             //设置名字
             //mediaForm.getAbsolutePath().substring()
             //mediaInfo.setName("");
-
+            //todo 修改表结构,赋值id 12.20
             mediaInfo.setNocount("");
             mediaInfo.setLllustrate("");
             mediaInfo.setLeadingOfficical("");
@@ -224,30 +180,49 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
     @Override
-    public List<ImgInput> queryImgBygoodsId(List<String> goodsIdList, Integer type) {
-        if (null == type || CollectionUtils.isEmpty(goodsIdList)) {
-            return null;
-        }
+    public List<ImgInput> queryImgByQueryOutput(QueryOutput queryOutput, Integer type) {
+        List<String> goodsIdList = queryOutput.getGoodsIdList();
+        List<String> sellerIdList = queryOutput.getSellerIdList();
         List<ImgInput> imgInputList = new ArrayList<>();
-        for (String goodsId : goodsIdList) {
-            List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsIdAndType(goodsId, type);
-            if (!CollectionUtils.isEmpty(mediaInfoList)) {
+
+        if (!CollectionUtils.isEmpty(goodsIdList)) {
+            for (String goodsId : goodsIdList) {
+                List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsIdAndType(goodsId, type);
+                if (!CollectionUtils.isEmpty(mediaInfoList)) {
+                    assembleImgInput(imgInputList, mediaInfoList);
+                }
+            }
+        }
+        if (!CollectionUtils.isEmpty(sellerIdList)) {
+            for (String sellerId : sellerIdList) {
+                List<MediaInfo> mediaInfoList = mapper.queryImgBySellerId(sellerId);
                 assembleImgInput(imgInputList, mediaInfoList);
             }
         }
+
         return imgInputList;
 
     }
 
     @Override
-    public List<ImgInput> queryImgBygoodsId(List<String> goodsIdList) {
-        if (CollectionUtils.isEmpty(goodsIdList)) {
-            return null;
-        }
+    public List<ImgInput> queryImgByQueryOutput(QueryOutput queryOutput) {
+        List<String> goodsIdList = queryOutput.getGoodsIdList();
+        List<String> sellerIdList = queryOutput.getSellerIdList();
         List<ImgInput> imgInputList = new ArrayList<>();
-        for (String goodsId : goodsIdList) {
-            List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsId(goodsId);
-            assembleImgInput(imgInputList, mediaInfoList);
+
+        if (!CollectionUtils.isEmpty(goodsIdList)) {
+            for (String goodsId : goodsIdList) {
+                List<MediaInfo> mediaInfoList = mapper.queryImgBygoodsId(goodsId);
+                assembleImgInput(imgInputList, mediaInfoList);
+            }
+        }
+        if (!CollectionUtils.isEmpty(sellerIdList)) {
+            for (String sellerId : sellerIdList) {
+                List<MediaInfo> mediaInfoList = mapper.queryImgBySellerId(sellerId);
+                if (mediaInfoList.size() > 0) {
+                    assembleImgInput(imgInputList, mediaInfoList);
+                }
+            }
         }
         //单独处理
         return imgInputList;
@@ -288,4 +263,17 @@ public class MediaInfoServiceImpl implements MediaInfoService {
     }
 
 
+    public List<ImgInput> queryIconByUserId(List<String> userIdIdList) {
+        List<ImgInput> imgInputList = new ArrayList<>();
+        for (String userid : userIdIdList) {
+            ImgInput imgInput = new ImgInput();
+            String icon = mapper.selectByUserId(userid, FileTypeEnum.ICON.getCode());
+            if (StringUtils.isNotBlank(icon)) {
+                imgInput.setIcon(icon);
+            }
+            imgInput.setEntityId(userid);
+            imgInputList.add(imgInput);
+        }
+        return imgInputList;
+    }
 }

@@ -2,6 +2,7 @@ package com.aojing.redstore.media.client;
 
 import com.aojing.redstore.media.common.ImgInput;
 import com.aojing.redstore.media.common.MediaOutput;
+import com.aojing.redstore.media.common.QueryOutput;
 import com.aojing.redstore.media.common.SpringMultipartEncoder;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -21,10 +22,10 @@ import java.util.Map;
 public interface MediaClient {
 
     @PostMapping(value = "/media/getImgByType")
-    List<ImgInput> getImgByType(@RequestBody List<String> goodsIdList, @RequestParam(value = "type") Integer type);
+    List<ImgInput> getImgByType(@RequestBody QueryOutput queryOutput, @RequestParam(value = "type") Integer type);
 
     @PostMapping(value = "/media/delete")
-    boolean delete(@RequestBody Integer mediaId, @RequestParam(value = "userId") String userId);
+    boolean delete(@RequestBody String  mediaId, @RequestParam(value = "userId") String userId);
 
     @PostMapping(value = "/media/addList")
     boolean addList(@RequestBody List<MediaOutput> mediaInfoList);
@@ -40,6 +41,9 @@ public interface MediaClient {
     List<String> upload(@RequestPart(value = "files") MultipartFile[] files);
 
     @PostMapping(value = "/media/getImgAllByType")
-    List<ImgInput> getImgAllByType(@RequestBody List<String> goodsIdList);
+    List<ImgInput> getImgAllByType(@RequestBody QueryOutput queryOutput);
+
+    @RequestMapping(value = "/media/queryIcon", method = RequestMethod.POST)
+     List<ImgInput> queryIconByUserId(@RequestBody List<String> userIdIdList);
 
 }

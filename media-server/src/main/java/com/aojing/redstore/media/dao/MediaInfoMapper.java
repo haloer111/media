@@ -8,23 +8,23 @@ import java.util.List;
 
 @Mapper
 public interface MediaInfoMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(MediaInfo record);
 
     int insertSelective(MediaInfo record);
 
-    MediaInfo selectByPrimaryKey(Integer id);
-    MediaInfo selectByIdAndUserId(@Param("id") Integer id, @Param("userId") String userId);
+    MediaInfo selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(MediaInfo record);
 
     int updateByPrimaryKey(MediaInfo record);
 
-
-
-
     //manual
     List<MediaInfo> queryImgBygoodsIdAndType(@Param("goodsId") String goodsId, @Param("type") Integer type);
     List<MediaInfo> queryImgBygoodsId(@Param("goodsId") String goodsId);
+
+    String selectByUserId(@Param("userid")String userid,@Param("code") int code);
+
+    List<MediaInfo> queryImgBySellerId(@Param("sellerId")String sellerId);
 }

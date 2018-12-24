@@ -1,5 +1,6 @@
 package com.aojing.redstore.media.ctrl;
 
+import com.aojing.redstore.media.common.QueryOutput;
 import com.aojing.redstore.media.common.ServerResponse;
 import com.aojing.redstore.media.common.MediaOutput;
 import com.aojing.redstore.media.service.MediaInfoService;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author gexiao
@@ -51,19 +51,19 @@ public class MediaInfoCtrl {
 
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public boolean delete(@RequestBody Integer mediaId,@RequestParam(value = "userId") String userId) {
+    public boolean delete(@RequestBody String  mediaId,@RequestParam(value = "userId") String userId) {
         return mediaInfoService.delete(mediaId, userId);
     }
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public ServerResponse<String> query(Integer id, String userId) {
+    public ServerResponse<String> query(String  id, String userId) {
         return mediaInfoService.queryById(id, userId);
     }
 
 
     @RequestMapping(value = "/getImgByType", method = RequestMethod.POST)
-    public List<ImgInput> getImgByType(@RequestBody List<String> goodsIdList,@RequestParam(value = "type") Integer type) {
-        return mediaInfoService.queryImgBygoodsId(goodsIdList, type);
+    public List<ImgInput> getImgByType(@RequestBody QueryOutput queryOutput, @RequestParam(value = "type") Integer type) {
+        return mediaInfoService.queryImgByQueryOutput(queryOutput, type);
     }
 
     @RequestMapping(value = "/addList", method = RequestMethod.POST)
@@ -72,7 +72,14 @@ public class MediaInfoCtrl {
     }
 
     @RequestMapping(value = "/getImgAllByType", method = RequestMethod.POST)
-    public List<ImgInput> getImgAllByType(@RequestBody List<String> goodsIdList){
-        return mediaInfoService.queryImgBygoodsId(goodsIdList);
+    public List<ImgInput> getImgAllByType(@RequestBody QueryOutput queryOutput){
+        return mediaInfoService.queryImgByQueryOutput(queryOutput);
     }
+
+    @RequestMapping(value = "/queryIcon", method = RequestMethod.POST)
+    public List<ImgInput> queryIconByUserId(@RequestBody List<String> userIdIdList){
+        return mediaInfoService.queryIconByUserId(userIdIdList);
+    }
+
+
 }
