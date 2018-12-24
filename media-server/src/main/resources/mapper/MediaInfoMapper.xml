@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aojing.redstore.media.dao.MediaInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.aojing.redstore.media.pojo.MediaInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="entity_id" property="entityId" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="hot_sell_id" property="hotSellId" jdbcType="VARCHAR" />
+    <result column="absolute_path" property="absolutePath" jdbcType="VARCHAR" />
+    <result column="relative_path" property="relativePath" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="NOCOUNT" property="nocount" jdbcType="VARCHAR" />
+    <result column="lllustrate" property="lllustrate" jdbcType="VARCHAR" />
+    <result column="leading_officical" property="leadingOfficical" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, entity_id, goods_id, menu_id, hot_sell_id, absolute_path, relative_path, type, 
+    name, NOCOUNT, lllustrate, leading_officical, location, remark, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from media_info_tb
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from media_info_tb
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
+    insert into media_info_tb (id, entity_id, goods_id, 
+      menu_id, hot_sell_id, absolute_path, 
+      relative_path, type, name, 
+      NOCOUNT, lllustrate, leading_officical, 
+      location, remark, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{entityId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+      #{menuId,jdbcType=VARCHAR}, #{hotSellId,jdbcType=VARCHAR}, #{absolutePath,jdbcType=VARCHAR}, 
+      #{relativePath,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{nocount,jdbcType=VARCHAR}, #{lllustrate,jdbcType=VARCHAR}, #{leadingOfficical,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
+    insert into media_info_tb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entityId != null" >
+        entity_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="hotSellId != null" >
+        hot_sell_id,
+      </if>
+      <if test="absolutePath != null" >
+        absolute_path,
+      </if>
+      <if test="relativePath != null" >
+        relative_path,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="nocount != null" >
+        NOCOUNT,
+      </if>
+      <if test="lllustrate != null" >
+        lllustrate,
+      </if>
+      <if test="leadingOfficical != null" >
+        leading_officical,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="entityId != null" >
+        #{entityId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="hotSellId != null" >
+        #{hotSellId,jdbcType=VARCHAR},
+      </if>
+      <if test="absolutePath != null" >
+        #{absolutePath,jdbcType=VARCHAR},
+      </if>
+      <if test="relativePath != null" >
+        #{relativePath,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nocount != null" >
+        #{nocount,jdbcType=VARCHAR},
+      </if>
+      <if test="lllustrate != null" >
+        #{lllustrate,jdbcType=VARCHAR},
+      </if>
+      <if test="leadingOfficical != null" >
+        #{leadingOfficical,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
+    update media_info_tb
+    <set >
+      <if test="entityId != null" >
+        entity_id = #{entityId,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="hotSellId != null" >
+        hot_sell_id = #{hotSellId,jdbcType=VARCHAR},
+      </if>
+      <if test="absolutePath != null" >
+        absolute_path = #{absolutePath,jdbcType=VARCHAR},
+      </if>
+      <if test="relativePath != null" >
+        relative_path = #{relativePath,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nocount != null" >
+        NOCOUNT = #{nocount,jdbcType=VARCHAR},
+      </if>
+      <if test="lllustrate != null" >
+        lllustrate = #{lllustrate,jdbcType=VARCHAR},
+      </if>
+      <if test="leadingOfficical != null" >
+        leading_officical = #{leadingOfficical,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.aojing.redstore.media.pojo.MediaInfo" >
+    update media_info_tb
+    set entity_id = #{entityId,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      hot_sell_id = #{hotSellId,jdbcType=VARCHAR},
+      absolute_path = #{absolutePath,jdbcType=VARCHAR},
+      relative_path = #{relativePath,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      NOCOUNT = #{nocount,jdbcType=VARCHAR},
+      lllustrate = #{lllustrate,jdbcType=VARCHAR},
+      leading_officical = #{leadingOfficical,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--manual-->
+  <select id="queryImgBygoodsIdAndType" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from media_info_tb
+    where goods_id = #{goodsId}
+    and type = #{type}
+  </select>
+
+  <select id="queryImgBygoodsId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from media_info_tb
+    where goods_id = #{goodsId}
+  </select>
+  <select id="queryImgBySellerId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from media_info_tb
+    where entity_id = #{sellerId}
+  </select>
+
+  <select id="selectByUserId" parameterType="map" resultType="string">
+    select absolute_path
+      from media_info_tb
+     where entity_id = #{userid}
+       and type = #{code}
+  </select>
+</mapper>
